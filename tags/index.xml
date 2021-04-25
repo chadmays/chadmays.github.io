@@ -6,11 +6,11 @@
     <description>Recent content in Tags on Chad Mays&#39;s Github Site</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 01 Apr 2021 00:00:00 +0000</lastBuildDate><atom:link href="http://chadmays.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 22 Apr 2021 00:00:00 +0000</lastBuildDate><atom:link href="http://chadmays.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>analysis</title>
       <link>http://chadmays.github.io/tags/analysis/</link>
-      <pubDate>Thu, 01 Apr 2021 00:00:00 +0000</pubDate>
+      <pubDate>Thu, 22 Apr 2021 00:00:00 +0000</pubDate>
       
       <guid>http://chadmays.github.io/tags/analysis/</guid>
       <description></description>
@@ -19,9 +19,18 @@
     <item>
       <title>data</title>
       <link>http://chadmays.github.io/tags/data/</link>
-      <pubDate>Thu, 01 Apr 2021 00:00:00 +0000</pubDate>
+      <pubDate>Thu, 22 Apr 2021 00:00:00 +0000</pubDate>
       
       <guid>http://chadmays.github.io/tags/data/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>R</title>
+      <link>http://chadmays.github.io/tags/r/</link>
+      <pubDate>Thu, 22 Apr 2021 00:00:00 +0000</pubDate>
+      
+      <guid>http://chadmays.github.io/tags/r/</guid>
       <description></description>
     </item>
     

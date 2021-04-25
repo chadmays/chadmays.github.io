@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Hugo 0.81.0" />
+
+
+<title>Barry Bonds: The Best Hitter of All Time?  - Chad Mays&#39;s Github Site</title>
+<meta property="og:title" content="Barry Bonds: The Best Hitter of All Time?  - Chad Mays&#39;s Github Site">
+
+
+  <link href='http://chadmays.github.io/favicon.ico' rel='icon' type='image/x-icon'/>
+
+
+
+  
+
+
+
+
+
+
+
+
+<link href='//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css' rel='stylesheet' type='text/css' />
+
+
+
+<link rel="stylesheet" href="/css/fonts.css" media="all">
+<link rel="stylesheet" href="/css/main.css" media="all">
+
+
+
+  </head>
+  <body>
+    <div class="wrapper">
+      <header class="header">
+        <nav class="nav">
+  <a href="/" class="nav-logo">
+    <img src="/images/logo.png"
+         width="50"
+         height="50"
+         alt="Logo">
+  </a>
+
+  <ul class="nav-links">
+    
+    <li><a href="/about/">About</a></li>
+    
+    <li><a href="https://github.com/chadmays">GitHub</a></li>
+    
+    <li><a href="https://twitter.com/chadster502">Twitter</a></li>
+    
+  </ul>
+</nav>
+
+      </header>
+
+
+<main class="content" role="main">
+
+  <article class="article">
+    
+    <span class="article-duration">9 min read</span>
+    
+
+    <h1 class="article-title">Barry Bonds: The Best Hitter of All Time? </h1>
+
+    
+    <span class="article-date">2021-04-22</span>
+    
+
+    <div class="article-content">
+      
+<script src="/rmarkdown-libs/header-attrs/header-attrs.js"></script>
+
+
+<p>On August 7, 2007 Barry Bonds enshrined his name into baseball and sports history. Just a few nights earlier Bonds hit home run 755 in San Diego with his arch nemesis Bud Selig watching from a suite. Then on a cold and windy summer night in the City by the bay, Bonds hit a towering home run into the right center bleachers to break Hank Aaron’s home run record. Duane Kuiper, the Giants broadcaster, said one of the lines that still ring in fans heads, “Bonds stands alone”. On that night, Barry Bonds became the greatest home run hitter that baseball had ever seen and will most likely ever see.</p>
+<p>But home runs, weren’t the only thing Bonds was the best at. He was a menace on the base paths. He had as much opposite field power as he did pull power. That feels like a rareity in today’s game. Instead of trying to list all the things Bonds was good at, it would be easier to list the things he wasn’t good at. Most of that list would be comprised of non-baseball things. He was just that good.</p>
+<p>But how good was he? In today’s game, we always compare current players to hall of famers when judging how good they are. But with Bonds not being in the hall of fame, that still applies. So in this story we are going to compare Barry Bonds to all of the players who sit in the baseball hall of fame. The goal is to answer this question: Was there anyone better then Barry?</p>
+<pre class="r"><code>library(tidyverse)</code></pre>
+<pre><code>## ── Attaching packages ─────────────────────────────────────── tidyverse 1.3.0 ──</code></pre>
+<pre><code>## ✓ ggplot2 3.3.3     ✓ purrr   0.3.4
+## ✓ tibble  3.0.5     ✓ dplyr   1.0.3
+## ✓ tidyr   1.1.2     ✓ stringr 1.4.0
+## ✓ readr   1.4.0     ✓ forcats 0.5.1</code></pre>
+<pre><code>## ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+## x dplyr::filter() masks stats::filter()
+## x dplyr::lag()    masks stats::lag()</code></pre>
+<pre class="r"><code>library(ggrepel)
+
+HOF_Bonds &lt;- read.csv(&quot;HOF.csv&quot;)</code></pre>
+<p>The data that I am using for this article is the stats of every single player in the baseball Hall of Fame offensive stats. This data comes from Baseball Reference. Additionally, I added in Barry Bonds career offensive stats as well.</p>
+<p>The first thing I want to do before I go any further is take this data and filter it just for players with at least 3000 carrer plate appearance. This will eliminate pitchers who may have seen at-bats, but since we are looking for the best hitter, we don’t want them skewing our data.</p>
+<pre class="r"><code>hitters &lt;- HOF_Bonds %&gt;% filter(PA&gt;3000)</code></pre>
+<p>Now that I have done that, I can begin using that data to create different types of anaylsis to hopefully answer the question as to whether or not Bonds is the baseball hitting GOAT.</p>
+<p>The first chart that we are going to look at is a scatterplot. On this scatterplot we will have two very important stats. On the x-axis we will have career WAR. WAR stands for wins above replacement. This stat is one of the more important ones when evaluating a players impact. According to MLB.com, “WAR measures a player’s value in all facets of the game by deciphering how many more wins he’s worth than a replacement-level player at his same position (e.g., a Minor League replacement or a readily available fill-in free agent).” On the y-axis we will have on base percentage. I choose these two because when looking at who the best offensive players are, the best will be impactful (which is what WAR will represent) and they will also get on base. I am going to create a data set just for Bonds so I can highlight him on the graph in the Giants signature orange.</p>
+<pre class="r"><code>Bonds &lt;-hitters %&gt;% filter(Name==&quot;Barry Bonds&quot;)
+
+ggplot() +
+  geom_point(data=hitters, aes(x=WAR, y=OBP),
+  color = &quot;grey&quot;,) +
+  geom_point(data=Bonds, aes(x=WAR, y=OBP),
+  color = &quot;#fd5a1e&quot;) +
+  theme_minimal() +
+  labs(title=&quot;Is Bonds as Impactful as His Stats Show?&quot;, subtitle=&quot;Although many argue about Bonds and the things he may have done, there is no doubting the impact he had.&quot;, caption=&quot;Source: BaseballReference | By Chad Mays&quot;, y = &quot;On-Base Percentage&quot;, x = &quot;Wins Above Replacement&quot;)  + 
+  theme(
+    plot.title = element_text(size = 15, face = &quot;bold&quot;),
+    axis.title = element_text(size = 8), 
+    plot.subtitle = element_text(size=8), 
+    panel.grid.minor = element_blank()
+  )</code></pre>
+<p><img src="/post/2021-04-22-barry-bonds-the-best-hitter-of-all-time/Barry_Bonds_files/figure-html/unnamed-chunk-3-1.png" width="672" />
+Bonds has the highest career WAR in the history of baseball and he got on base nearly 45% of his at-bats. That is an absurd amount. While his OBP may not be the highest, there is no doubt that when accompanied with WAR, he may be one of the most, if not the most, impactful players to ever stand in a batters boxs. When you think of the names around him, Hank Aaron, Babe Ruth, Willie Mays, Micky Mantle, and so many more, that is one heck of a stat to be the leader of. While that stat alone doesn’t prove he is the best hitter of all time, it does show he is up there with the best.</p>
+<p>One of the underappreicated stats when evaluating the best hitters, is their ability to strike fear in their opponent. There was no one who did that better than Bonds. Bonds was once walked with the bases loaded in the bottom of the 9th inning while the Giants were down two. The opposition preferred pitching to someone other the Bonds even if that meant a smaller lead.</p>
+<p>In my opinion the best stat to represent the fear a hitter brough to the opposition is walks and intentional walks especially. There was no one better then Bonds at getting the free base. So to represent this I created two bar charts, one that has career walks and one that has intentional walks. I took all of the hall of fame players who have more than 1,500 career walks and Barry Bonds walk stats.</p>
+<pre class="r"><code>NormalWalks &lt;- HOF_Bonds %&gt;% 
+ filter(BB&gt;1500) 
+
+ggplot() + 
+  geom_bar(data=NormalWalks, aes(x=reorder(Name,BB), weight=BB))+ 
+  geom_bar(data=Bonds, aes(x=reorder(Name,BB), weight=BB, fill=&quot;Orange&quot;))+
+  labs(
+    title=&quot;Bonds Had an Eagles Eye at the Plate&quot;, subtitle = &quot;Bonds had such a presence on the plate, it was tough to throw him strikes.&quot;,
+    x=&quot;Name&quot;, 
+    y=&quot;Walks&quot;,
+    fill=&quot;Bonds&quot;) + 
+  theme_minimal() + 
+  coord_flip()+
+  theme(
+    plot.title = element_text(size = 15, face = &quot;bold&quot;),
+    axis.title = element_text(size = 8), 
+    plot.subtitle = element_text(size=12), 
+    panel.grid.minor = element_blank()
+  )</code></pre>
+<p><img src="/post/2021-04-22-barry-bonds-the-best-hitter-of-all-time/Barry_Bonds_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<pre class="r"><code>ggplot() + 
+  geom_bar(data=NormalWalks, aes(x=reorder(Name,IBB), weight=IBB))+ 
+  geom_bar(data=Bonds, aes(x=reorder(Name,IBB), weight=IBB, fill=&quot;Orange&quot;))+
+  labs(
+    title=&quot;Nothing Scarier Then Facing Bonds&quot;, subtitle = &quot;Sometimes the easiest way to  get him out was to put him on free.&quot;,
+    x=&quot;Name&quot;, 
+    y=&quot;Intentional Walks&quot;,
+    fill=&quot;Bonds&quot;) + 
+  theme_minimal() + 
+  coord_flip()+
+  theme(
+    plot.title = element_text(size = 15, face = &quot;bold&quot;),
+    axis.title = element_text(size = 8), 
+    plot.subtitle = element_text(size=12), 
+    panel.grid.minor = element_blank()
+  )</code></pre>
+<p><img src="/post/2021-04-22-barry-bonds-the-best-hitter-of-all-time/Barry_Bonds_files/figure-html/unnamed-chunk-4-2.png" width="672" /></p>
+<p>It’s pretty clear that Bonds was the least desired hitter for a pitcher to go against. Not only did pitchers work around him to prevent him from hitting the ball, they admitted defeat and let him get on base without a challenge. No player has ever had the presence that Bonds has had. Not then and not now. Some of the games most feared players, Yaz, Ruth, Thomas, Mantle, Williams, and so many more, never even came close to the amount of times Bonds was intentionally put on base.</p>
+<p>But what about Bonds made him so good and so feared? It’s simple. He hit the ball far. Really far. In game 2 of the 2002 World Series against the Angels, Bonds hit a homerun that went to so far, that not even the camera could follow it. The camera cut to Angels pitcher Tim Salmon saying, “That’s the farthest ball I have ever seen hit.” This wasn’t an uncommon for Bonds either. He consitiently hit homeruns that defied logic. People who hate him still paid to see him play. But just how powerful was he?</p>
+<p>I created a bubble chart that has slugging percenatge, career home runs and the size of the bubble represents walks.</p>
+<pre class="r"><code>ggplot() + 
+  geom_point(
+    data = hitters, 
+    aes(x = HR, y = SLG , size= BB), 
+    color=&quot;grey&quot;, 
+    alpha=.5) + 
+  geom_point(
+    data = Bonds, 
+    aes(x = HR, y = SLG, size= BB), 
+    color=&quot;#fd5a1e&quot;, alpha = .8) +
+  scale_size(range = c(-5,10), name = &quot;Walks&quot; )+
+   theme_minimal() +
+  labs(title=&quot;Barry Bonds or the Hulk?&quot;, subtitle=&quot;No hitter could hit the ball as far and out of the park as often as Bonds.&quot;, caption= &quot;Source: BaseballReference | By Chad Mays&quot;, y=&quot;Slugging Percentage&quot;, x=&quot;Homeruns&quot;)  + 
+  theme(
+    plot.title = element_text(size = 15, face = &quot;bold&quot;),
+    axis.title = element_text(size = 8), 
+    plot.subtitle = element_text(size=10), 
+    panel.grid.minor = element_blank()
+  )</code></pre>
+<p><img src="/post/2021-04-22-barry-bonds-the-best-hitter-of-all-time/Barry_Bonds_files/figure-html/unnamed-chunk-5-1.png" width="672" />
+Bonds really was a menace at the plate. While his slugging percentage wasn’t the highest, it was still one of the best. He also broke the record for most home runs witht 764. You match a high slugging percentage and a lot of homeruns, there is no suprise that Bonds is the most walked player in the history of the game.</p>
+<p>But homers aren’t the only important stat. Extra base his are also of a lot of importance. One of the most important things an offense can do is get runners in scoring position. So I took at the hitters with the most extra base hits and put them into a bar chart. This will help show that Bonds is once again at or near the top of the leaderboard.</p>
+<pre class="r"><code>XBH &lt;- HOF_Bonds %&gt;% 
+  group_by(Name) %&gt;% 
+  summarise(
+    XBH = (sum(X2B)+sum(X3B)+sum(HR))
+  ) %&gt;% 
+ top_n(7)</code></pre>
+<pre><code>## Selecting by XBH</code></pre>
+<pre class="r"><code>XBHbonds &lt;- Bonds %&gt;% 
+  group_by(Name) %&gt;% 
+  summarise(
+    XBH = (sum(X2B)+sum(X3B)+sum(HR))
+  )
+
+ggplot() + 
+  geom_bar(data=XBH, aes(x=reorder(Name,XBH), weight=XBH))+ 
+  geom_bar(data=XBHbonds, aes(x=reorder(Name, XBH), weight=XBH), fill=&quot;#fd5a1e&quot; )+
+  labs(
+    title=&quot;Bonds Didn&#39;t Just Hit Homers&quot;, subtitle = &quot;Bonds overtook Aaron for homeruns but not extra base hits.&quot;,
+    x=&quot;&quot;, 
+    y=&quot;Extra Base Hits&quot;) + 
+  theme_minimal() + 
+  theme(
+    plot.title = element_text(size = 15, face = &quot;bold&quot;),
+    axis.title = element_text(size = 8), 
+    plot.subtitle = element_text(size=12), 
+    panel.grid.minor = element_blank()
+  )</code></pre>
+<p><img src="/post/2021-04-22-barry-bonds-the-best-hitter-of-all-time/Barry_Bonds_files/figure-html/unnamed-chunk-6-1.png" width="672" />
+Bonds up at the top. Not only did he hit home runs but he also put himself in a position to score a lot. He was not just a one dimensional hitter. He could do everything.</p>
+<p>It’s hard to pull every single offensive stat. But in this article, I have looked at some of the most important. The one player who is constantly at or near the top every single time is Barry Bonds.</p>
+<p>The definition of a hall of fame is the “class or category of those who have excelled in a particular activity or field.” Not only is Barry Bonds one of the best hitters of all time, he is a hall of famer. There is no question about it.</p>
+<p>Now I know the argument against him is that he cheated. And yes there is evidence he used PED; he became a massive human being over night and his head is huge. But he was never caught.</p>
+<p>The argument can be made he is the greatest hitter of all time. I showed you that. He struck fear in pitchers that no one else did. He hit more homeruns than any player to ever play. For a long time that was viewed as an unbreakable record. Bonds broke it.</p>
+<p>Even if you argue he’s not the best. The evidence proves one thing. Compared to the hall of famers who have played this game, Bonds stats is better then almsot every single one of them.</p>
+<p>Barry Bonds belongs in the hall of fame.</p>
+<p>End of discussion.</p>
+
+    </div>
+  </article>
+
+  
+
+
+</main>
+
+      <footer class="footer">
+        <ul class="footer-links">
+          <li>
+            <a href="/index.xml" type="application/rss+xml" target="_blank">RSS feed</a>
+          </li>
+          <li>
+            <a href="https://gohugo.io/" class="footer-links-kudos">Made with <img src="/images/hugo-logo.png" alt="Img link to Hugo website" width="22" height="22"></a>
+          </li>
+        </ul>
+      </footer>
+
+    </div>
+    
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/r.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/yaml.min.js"></script>
+<script>hljs.configure({languages: []}); hljs.initHighlightingOnLoad();</script>
+
+
+
+    
+
+    
+  </body>
+</html>
+
