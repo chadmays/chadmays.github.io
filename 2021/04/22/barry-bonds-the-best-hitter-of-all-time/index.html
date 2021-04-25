@@ -76,9 +76,9 @@
 <script src="/rmarkdown-libs/header-attrs/header-attrs.js"></script>
 
 
-<p>On August 7, 2007 Barry Bonds enshrined his name into baseball and sports history. Just a few nights earlier Bonds hit home run 755 in San Diego with his arch nemesis Bud Selig watching from a suite. Then on a cold and windy summer night in the City by the bay, Bonds hit a towering home run into the right center bleachers to break Hank Aaron’s home run record. Duane Kuiper, the Giants broadcaster, said one of the lines that still ring in fans heads, “Bonds stands alone”. On that night, Barry Bonds became the greatest home run hitter that baseball had ever seen and will most likely ever see.</p>
+<p>On August 7, 2007 Barry Bonds enshrined his name into baseball and sports history. Just a few nights earlier Bonds hit home run 755 in San Diego with his arch nemesis MLB Commissioner Bud Selig watching from a suite. Then on a cold and windy summer night in the City by the bay, Bonds hit a towering home run into the right center bleachers to break Hank Aaron’s home run record. Duane Kuiper, the Giants broadcaster, said one of the lines that still ring in fans heads, “Bonds stands alone”. On that night, Barry Bonds became the greatest home run hitter that baseball had ever seen and will most likely ever see.</p>
 <p>But home runs, weren’t the only thing Bonds was the best at. He was a menace on the base paths. He had as much opposite field power as he did pull power. That feels like a rareity in today’s game. Instead of trying to list all the things Bonds was good at, it would be easier to list the things he wasn’t good at. Most of that list would be comprised of non-baseball things. He was just that good.</p>
-<p>But how good was he? In today’s game, we always compare current players to hall of famers when judging how good they are. But with Bonds not being in the hall of fame, that still applies. So in this story we are going to compare Barry Bonds to all of the players who sit in the baseball hall of fame. The goal is to answer this question: Was there anyone better then Barry?</p>
+<p>But how good was he? In today’s game, we always compare current players to hall of famers when judging how good they are. But with Bonds not being in the hall of fame, that still applies. So in this story we are going to compare Barry Bonds to all of the players who sit in the baseball hall of fame. The goal is to answer this question: Was there anyone better then Barry Bonds?</p>
 <pre class="r"><code>library(tidyverse)</code></pre>
 <pre><code>## ── Attaching packages ─────────────────────────────────────── tidyverse 1.3.0 ──</code></pre>
 <pre><code>## ✓ ggplot2 3.3.3     ✓ purrr   0.3.4
@@ -90,7 +90,14 @@
 ## x dplyr::lag()    masks stats::lag()</code></pre>
 <pre class="r"><code>library(ggrepel)
 
-HOF_Bonds &lt;- read.csv(&quot;HOF.csv&quot;)</code></pre>
+HOF_Bonds &lt;- read_csv(&quot;HOF.csv&quot;)</code></pre>
+<pre><code>## 
+## ── Column specification ────────────────────────────────────────────────────────
+## cols(
+##   .default = col_double(),
+##   Name = col_character()
+## )
+## ℹ Use `spec()` for the full column specifications.</code></pre>
 <p>The data that I am using for this article is the stats of every single player in the baseball Hall of Fame offensive stats. This data comes from Baseball Reference. Additionally, I added in Barry Bonds career offensive stats as well.</p>
 <p>The first thing I want to do before I go any further is take this data and filter it just for players with at least 3000 carrer plate appearance. This will eliminate pitchers who may have seen at-bats, but since we are looking for the best hitter, we don’t want them skewing our data.</p>
 <pre class="r"><code>hitters &lt;- HOF_Bonds %&gt;% filter(PA&gt;3000)</code></pre>
@@ -177,24 +184,24 @@ ggplot() +
 <p><img src="/post/2021-04-22-barry-bonds-the-best-hitter-of-all-time/Barry_Bonds_files/figure-html/unnamed-chunk-5-1.png" width="672" />
 Bonds really was a menace at the plate. While his slugging percentage wasn’t the highest, it was still one of the best. He also broke the record for most home runs witht 764. You match a high slugging percentage and a lot of homeruns, there is no suprise that Bonds is the most walked player in the history of the game.</p>
 <p>But homers aren’t the only important stat. Extra base his are also of a lot of importance. One of the most important things an offense can do is get runners in scoring position. So I took at the hitters with the most extra base hits and put them into a bar chart. This will help show that Bonds is once again at or near the top of the leaderboard.</p>
-<pre class="r"><code>XBH &lt;- HOF_Bonds %&gt;% 
-  group_by(Name) %&gt;% 
+<pre class="r"><code>XBH &lt;- hitters %&gt;%
+  group_by(Name) %&gt;%
   summarise(
-    XBH = (sum(X2B)+sum(X3B)+sum(HR))
+    XBH = (sum(`2B`)+sum(`3B`)+sum(HR))
   ) %&gt;% 
  top_n(7)</code></pre>
 <pre><code>## Selecting by XBH</code></pre>
 <pre class="r"><code>XBHbonds &lt;- Bonds %&gt;% 
   group_by(Name) %&gt;% 
   summarise(
-    XBH = (sum(X2B)+sum(X3B)+sum(HR))
+  XBH = (sum(`2B`)+sum(`3B`)+sum(HR))
   )
 
 ggplot() + 
   geom_bar(data=XBH, aes(x=reorder(Name,XBH), weight=XBH))+ 
   geom_bar(data=XBHbonds, aes(x=reorder(Name, XBH), weight=XBH), fill=&quot;#fd5a1e&quot; )+
   labs(
-    title=&quot;Bonds Didn&#39;t Just Hit Homers&quot;, subtitle = &quot;Bonds overtook Aaron for homeruns but not extra base hits.&quot;,
+    title=&quot;Bonds Did More Than Just Hit Homers&quot;, subtitle = &quot;Bonds overtook Aaron for homeruns but not extra base hits.&quot;,
     x=&quot;&quot;, 
     y=&quot;Extra Base Hits&quot;) + 
   theme_minimal() + 
